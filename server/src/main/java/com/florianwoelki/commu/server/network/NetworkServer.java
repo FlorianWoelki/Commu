@@ -5,7 +5,7 @@ import com.florianwoelki.commu.protocol.PacketListener;
 import com.florianwoelki.commu.protocol.PacketType;
 import com.florianwoelki.commu.protocol.packet.ConnectPacket;
 import com.florianwoelki.commu.protocol.packet.DisconnectPacket;
-import com.florianwoelki.commu.protocol.packet.PacketDictionary;
+import com.florianwoelki.commu.protocol.PacketDictionary;
 import com.florianwoelki.commu.server.CommuServer;
 
 import java.io.DataInputStream;

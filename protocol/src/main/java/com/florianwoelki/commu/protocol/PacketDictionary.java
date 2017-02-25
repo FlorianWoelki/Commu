@@ -1,7 +1,9 @@
-package com.florianwoelki.commu.protocol.packet;
+package com.florianwoelki.commu.protocol;
 
 import com.florianwoelki.commu.protocol.Packet;
 import com.florianwoelki.commu.protocol.PacketType;
+import com.florianwoelki.commu.protocol.packet.ConnectPacket;
+import com.florianwoelki.commu.protocol.packet.DisconnectPacket;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
