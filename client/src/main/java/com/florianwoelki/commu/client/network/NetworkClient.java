@@ -2,10 +2,10 @@ package com.florianwoelki.commu.client.network;
 
 import com.florianwoelki.commu.client.CommuClient;
 import com.florianwoelki.commu.protocol.Packet;
+import com.florianwoelki.commu.protocol.PacketDictionary;
 import com.florianwoelki.commu.protocol.PacketType;
 import com.florianwoelki.commu.protocol.packet.ConnectPacket;
 import com.florianwoelki.commu.protocol.packet.DisconnectPacket;
-import com.florianwoelki.commu.protocol.PacketDictionary;
 
 import javax.swing.*;
 import java.io.DataInputStream;
