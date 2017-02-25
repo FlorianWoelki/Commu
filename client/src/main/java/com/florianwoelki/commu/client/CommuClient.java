@@ -14,6 +14,8 @@ import lombok.Getter;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by Florian Woelki on 23.02.17.
@@ -68,9 +70,33 @@ public class CommuClient extends Window {
         panel.add(panelInput, BorderLayout.SOUTH);
 
         fieldInput = new WebTextField();
+        fieldInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String message = fieldInput.getText();
+
+                    if(message.length() == 0) {
+                        return;
+                    }
+
+                    textChat.append(client.getUsername() + ": " + message + "\n");
+                    fieldInput.setText("");
+                    // TODO: send chat message to server
+                }
+            }
+        });
         panelInput.add(fieldInput, BorderLayout.CENTER);
         buttonSend = new WebButton("Send");
         buttonSend.addActionListener(e -> {
+            String message = fieldInput.getText();
+
+            if(message.length() == 0) {
+                return;
+            }
+
+            textChat.append(client.getUsername() + ": " + message + "\n");
+            fieldInput.setText("");
             // TODO: send chat message to server
         });
         panelInput.add(buttonSend, BorderLayout.EAST);

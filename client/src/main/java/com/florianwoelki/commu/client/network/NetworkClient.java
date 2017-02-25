@@ -82,6 +82,10 @@ public class NetworkClient {
         output.writeUTF(packet.getOutgoingData());
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public Map<String, Socket> getConnectedClients() {
         return connectedClients;
     }
