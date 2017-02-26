@@ -133,6 +133,14 @@ public class NetworkServer implements PacketListener {
             return;
         }
 
+        connectedClientMap.keySet().forEach(username -> {
+            try {
+                sendPacket(new ConnectPacket(username), client);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         connectedClientMap.put(packet.i_username, client);
         CommuServer.getInstance().updateView();
     }
