@@ -1,5 +1,6 @@
 package com.florianwoelki.commu.protocol;
 
+import com.florianwoelki.commu.protocol.packet.ChatPacket;
 import com.florianwoelki.commu.protocol.packet.ConnectPacket;
 import com.florianwoelki.commu.protocol.packet.DisconnectPacket;
 
@@ -17,6 +18,7 @@ public class PacketDictionary {
     static {
         PACKET_DICTIONARY.put(PacketType.CONNECT, ConnectPacket.class);
         PACKET_DICTIONARY.put(PacketType.DISCONNECT, DisconnectPacket.class);
+        PACKET_DICTIONARY.put(PacketType.CHAT, ChatPacket.class);
     }
 
     public static Packet translatePacketType(PacketType packetType, String[] data) {
