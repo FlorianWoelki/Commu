@@ -77,7 +77,7 @@ public class NetworkClient {
         }
     }
 
-    private void sendPacket(Packet packet) throws IOException {
+    public void sendPacket(Packet packet) throws IOException {
         DataOutputStream output = new DataOutputStream(socket.getOutputStream());
         output.writeUTF(packet.getOutgoingData());
     }

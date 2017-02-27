@@ -9,6 +9,7 @@ import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
 import com.florianwoelki.commu.api.gfx.Window;
 import com.florianwoelki.commu.client.network.NetworkClient;
+import com.florianwoelki.commu.protocol.packet.ChatPacket;
 import lombok.Getter;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 /**
  * Created by Florian Woelki on 23.02.17.
@@ -82,7 +84,12 @@ public class CommuClient extends Window {
 
                     textChat.append(client.getUsername() + ": " + message + "\n");
                     fieldInput.setText("");
-                    // TODO: send chat message to server
+
+                    try {
+                        client.sendPacket(new ChatPacket(client.getUsername(), message));
+                    } catch(IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });
