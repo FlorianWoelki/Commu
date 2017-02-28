@@ -4,6 +4,7 @@ import com.florianwoelki.commu.client.CommuClient;
 import com.florianwoelki.commu.protocol.Packet;
 import com.florianwoelki.commu.protocol.PacketDictionary;
 import com.florianwoelki.commu.protocol.PacketType;
+import com.florianwoelki.commu.protocol.packet.ChatPacket;
 import com.florianwoelki.commu.protocol.packet.ConnectPacket;
 import com.florianwoelki.commu.protocol.packet.DisconnectPacket;
 
@@ -74,6 +75,9 @@ public class NetworkClient {
             DisconnectPacket disconnectPacket = (DisconnectPacket) packet;
             connectedClients.remove(disconnectPacket.i_username);
             CommuClient.getInstance().updateView();
+        } else if(packet instanceof ChatPacket) {
+            ChatPacket chatPacket = (ChatPacket) packet;
+            CommuClient.getInstance().appendText(chatPacket.i_username, chatPacket.i_message);
         }
     }
 

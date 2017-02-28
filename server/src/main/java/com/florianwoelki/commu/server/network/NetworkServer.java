@@ -4,6 +4,7 @@ import com.florianwoelki.commu.protocol.Packet;
 import com.florianwoelki.commu.protocol.PacketDictionary;
 import com.florianwoelki.commu.protocol.PacketListener;
 import com.florianwoelki.commu.protocol.PacketType;
+import com.florianwoelki.commu.protocol.packet.ChatPacket;
 import com.florianwoelki.commu.protocol.packet.ConnectPacket;
 import com.florianwoelki.commu.protocol.packet.DisconnectPacket;
 import com.florianwoelki.commu.server.CommuServer;
@@ -125,7 +126,21 @@ public class NetworkServer implements PacketListener {
     public void packetReceived(Packet packet, Socket client) {
         if(packet instanceof ConnectPacket) {
             connectClient((ConnectPacket) packet, client);
+        } else if(packet instanceof ChatPacket) {
+            chatClient((ChatPacket) packet, client);
         }
+    }
+
+    private void chatClient(ChatPacket packet, Socket client) {
+        connectedClientMap.values().forEach(socket -> {
+            if(!socket.getRemoteSocketAddress().equals(client.getRemoteSocketAddress())) {
+                try {
+                    sendPacket(new ChatPacket(packet.i_username, packet.i_message), socket);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void connectClient(ConnectPacket packet, Socket client) {

@@ -76,37 +76,37 @@ public class CommuClient extends Window {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    String message = fieldInput.getText();
-
-                    if(message.length() == 0) {
-                        return;
-                    }
-
-                    textChat.append(client.getUsername() + ": " + message + "\n");
-                    fieldInput.setText("");
-
-                    try {
-                        client.sendPacket(new ChatPacket(client.getUsername(), message));
-                    } catch(IOException e1) {
-                        e1.printStackTrace();
-                    }
+                    sendChatPacket();
                 }
             }
         });
         panelInput.add(fieldInput, BorderLayout.CENTER);
         buttonSend = new WebButton("Send");
         buttonSend.addActionListener(e -> {
-            String message = fieldInput.getText();
-
-            if(message.length() == 0) {
-                return;
-            }
-
-            textChat.append(client.getUsername() + ": " + message + "\n");
-            fieldInput.setText("");
-            // TODO: send chat message to server
+            sendChatPacket();
         });
         panelInput.add(buttonSend, BorderLayout.EAST);
+    }
+
+    private void sendChatPacket() {
+        String message = fieldInput.getText();
+
+        if(message.length() == 0) {
+            return;
+        }
+
+        appendText(client.getUsername(), message);
+        fieldInput.setText("");
+
+        try {
+            client.sendPacket(new ChatPacket(client.getUsername(), message));
+        } catch(IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public void appendText(String username, String message) {
+        textChat.append(username + ": " + message + "\n");
     }
 
     public void updateView() {
