@@ -120,6 +120,7 @@ public class CommuClient extends Window {
             WebLookAndFeel.install();
 
             instance = new CommuClient();
+            instance.setTitle(TITLE + " | Connected as " + instance.client.getUsername());
             instance.setVisible(true);
         });
     }
