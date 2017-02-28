@@ -35,7 +35,6 @@ public class CommuClient extends Window {
     private WebList listUsers;
     private WebTextArea textChat;
     private WebTextField fieldInput;
-    private WebButton buttonSend;
 
     public CommuClient() {
         super(TITLE, WIDTH, HEIGHT);
@@ -81,7 +80,7 @@ public class CommuClient extends Window {
             }
         });
         panelInput.add(fieldInput, BorderLayout.CENTER);
-        buttonSend = new WebButton("Send");
+        WebButton buttonSend = new WebButton("Send");
         buttonSend.addActionListener(e -> {
             sendChatPacket();
         });
@@ -111,9 +110,7 @@ public class CommuClient extends Window {
 
     public void updateView() {
         DefaultListModel model = new DefaultListModel();
-        client.getConnectedClients().keySet().forEach(username -> {
-            model.addElement(username);
-        });
+        client.getConnectedClients().keySet().forEach(model::addElement);
         listUsers.setModel(model);
     }
 
