@@ -48,7 +48,7 @@ public abstract class Packet {
     }
 
     protected String compileOutgoingData() {
-        StringBuffer buffer = new StringBuffer(packetType.name()).append(";");
+        StringBuilder buffer = new StringBuilder(packetType.name()).append(";");
         // LOGIN;
         for(int i = dataList.size() - 1; i >= 0; i--) {
             String data = dataList.get(i);
