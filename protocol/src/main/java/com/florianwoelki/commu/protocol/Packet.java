@@ -1,5 +1,14 @@
 package com.florianwoelki.commu.protocol;
 
+import com.florianwoelki.commu.protocol.security.decryption.Decryption;
+import com.florianwoelki.commu.protocol.security.encryption.Encryption;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +16,9 @@ import java.util.List;
  * Created by Florian Woelki on 24.02.17.
  */
 public abstract class Packet {
+
+    private Encryption encryption = new Encryption();
+    private Decryption decryption = new Decryption();
 
     // username;time;message
     private List<String> dataList = new ArrayList<>();
@@ -26,7 +38,13 @@ public abstract class Packet {
     }
 
     protected String getData(int index) {
-        return dataList.get(index);
+        String data = dataList.get(index);
+        try {
+            return decryption.decrypt(data);
+        } catch(NoSuchPaddingException | NoSuchAlgorithmException | IOException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Outgoing packet methods
@@ -35,7 +53,12 @@ public abstract class Packet {
     }
 
     protected void addData(String data, int index) {
-        dataList.add(index, data);
+        try {
+            String encryptedData = encryption.encrypt(data);
+            dataList.add(index, encryptedData);
+        } catch(NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract void indexOutgoingData();
