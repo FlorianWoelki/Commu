@@ -10,6 +10,9 @@ import java.util.Map;
 
 /**
  * Created by Florian Woelki on 24.02.17.
+ *
+ * This class holds every packet and it acts like a
+ * dictionary for packets.
  */
 public class PacketDictionary {
 
@@ -21,6 +24,13 @@ public class PacketDictionary {
         PACKET_DICTIONARY.put(PacketType.CHAT, ChatPacket.class);
     }
 
+    /**
+     * Translate the packet type and returns a packet.
+     *
+     * @param packetType PacketType, which will be the returned packet
+     * @param data       String[] for the given data the packet will have
+     * @return The translated packet with all information
+     */
     public static Packet translatePacketType(PacketType packetType, String[] data) {
         Class clazz = PACKET_DICTIONARY.get(packetType);
         if(clazz != null) {
