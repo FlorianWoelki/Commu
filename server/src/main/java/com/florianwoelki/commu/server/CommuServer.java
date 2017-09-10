@@ -17,6 +17,9 @@ import java.util.Date;
 
 /**
  * Created by Florian Woelki on 23.02.17.
+ *
+ * This class creates the GUI for the server.
+ * It also extends from the {@link Window} class.
  */
 public class CommuServer extends Window {
 
@@ -33,6 +36,10 @@ public class CommuServer extends Window {
     private WebTextArea console;
     private WebList listUsers;
 
+    /**
+     * This constructor initializes the frame and
+     * starts the server.
+     */
     public CommuServer() {
         super(TITLE, WIDTH, HEIGHT);
         initFrame();
@@ -41,6 +48,9 @@ public class CommuServer extends Window {
         server = new NetworkServer(8000);
     }
 
+    /**
+     * See {@link Window#createView()}
+     */
     @Override
     public void createView() {
         WebPanel panel = new WebPanel();
@@ -48,6 +58,7 @@ public class CommuServer extends Window {
 
         panel.setLayout(new BorderLayout());
 
+        // Creates the console in the center
         console = new WebTextArea();
         console.setEditable(false);
         ((DefaultCaret) console.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
@@ -55,6 +66,7 @@ public class CommuServer extends Window {
         consoleSP.setBorder(BorderFactory.createTitledBorder("Console Output:"));
         panel.add(consoleSP, BorderLayout.CENTER);
 
+        // Creates the connected users in the east
         listUsers = new WebList();
         WebScrollPane listUsersSP = new WebScrollPane(listUsers);
         listUsersSP.setBorder(BorderFactory.createTitledBorder("Connected Users:"));
@@ -62,14 +74,21 @@ public class CommuServer extends Window {
         panel.add(listUsersSP, BorderLayout.EAST);
     }
 
+    /**
+     * This method updates the view in the client GUI.
+     * It updates the connected users.
+     */
     public void updateView() {
         DefaultListModel model = new DefaultListModel();
-        server.getConnectedClientMap().keySet().forEach(username -> {
-            model.addElement(username);
-        });
+        server.getConnectedClientMap().keySet().forEach(model::addElement);
         listUsers.setModel(model);
     }
 
+    /**
+     * This method logs a specific message to the console.
+     *
+     * @param message String, which will be logged
+     */
     public void log(String message) {
         console.append(DATE_FORMAT.format(new Date()) + " " + message + "\n");
     }
@@ -79,6 +98,7 @@ public class CommuServer extends Window {
             // Install WebLaf
             WebLookAndFeel.install();
 
+            // Creating instance of server and starts it
             instance = new CommuServer();
             instance.server.startServer();
             instance.setVisible(true);
