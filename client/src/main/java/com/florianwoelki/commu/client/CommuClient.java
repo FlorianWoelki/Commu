@@ -21,6 +21,9 @@ import java.io.IOException;
 
 /**
  * Created by Florian Woelki on 23.02.17.
+ *
+ * This class creates the GUI for the client.
+ * It inherits from the {@link Window}
  */
 public class CommuClient extends Window {
 
@@ -36,6 +39,10 @@ public class CommuClient extends Window {
     private WebTextArea textChat;
     private WebTextField fieldInput;
 
+    /**
+     * This constructor initializes the frame and it connects
+     * to the server.
+     */
     public CommuClient() {
         super(TITLE, WIDTH, HEIGHT);
         initFrame();
@@ -44,6 +51,9 @@ public class CommuClient extends Window {
         client.connectToServer();
     }
 
+    /**
+     * See {@link Window#createView()}
+     */
     @Override
     public void createView() {
         WebPanel panel = new WebPanel();
@@ -51,15 +61,16 @@ public class CommuClient extends Window {
 
         panel.setLayout(new BorderLayout());
 
+        // Creating the connected users panel in the east
         listUsers = new WebList();
         WebScrollPane listUsersSP = new WebScrollPane(listUsers);
         listUsersSP.setBorder(BorderFactory.createTitledBorder("Connected Users:"));
         listUsersSP.setPreferredSize(new Dimension(200, 0));
         panel.add(listUsersSP, BorderLayout.EAST);
 
+        // Creating the chat panel in the center
         WebPanel panelChat = new WebPanel(new BorderLayout());
         panel.add(panelChat, BorderLayout.CENTER);
-
         textChat = new WebTextArea();
         textChat.setEditable(false);
         ((DefaultCaret) textChat.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
@@ -67,9 +78,9 @@ public class CommuClient extends Window {
         textChatSP.setBorder(BorderFactory.createTitledBorder("Chat:"));
         panelChat.add(textChatSP, BorderLayout.CENTER);
 
+        // Creating the input panel in the south
         WebPanel panelInput = new WebPanel(new BorderLayout());
         panel.add(panelInput, BorderLayout.SOUTH);
-
         fieldInput = new WebTextField();
         fieldInput.addKeyListener(new KeyAdapter() {
             @Override
@@ -81,15 +92,18 @@ public class CommuClient extends Window {
         });
         panelInput.add(fieldInput, BorderLayout.CENTER);
         WebButton buttonSend = new WebButton("Send");
-        buttonSend.addActionListener(e -> {
-            sendChatPacket();
-        });
+        buttonSend.addActionListener(e -> sendChatPacket());
         panelInput.add(buttonSend, BorderLayout.EAST);
     }
 
+    /**
+     * Send the chat packet to the server.
+     * It also append the chat message to the client GUI.
+     */
     private void sendChatPacket() {
         String message = fieldInput.getText();
 
+        // Check if message is empty
         if(message.length() == 0) {
             return;
         }
@@ -104,10 +118,21 @@ public class CommuClient extends Window {
         }
     }
 
+    /**
+     * This method appends a given text to the chat of
+     * the client GUI.
+     *
+     * @param username String, who sends a message
+     * @param message  String, what the message is
+     */
     public void appendText(String username, String message) {
         textChat.append(username + ": " + message + "\n");
     }
 
+    /**
+     * This method updates the view in the client GUI.
+     * It updates the connected users.
+     */
     public void updateView() {
         DefaultListModel model = new DefaultListModel();
         client.getConnectedClients().keySet().forEach(model::addElement);
@@ -119,6 +144,7 @@ public class CommuClient extends Window {
             // Install WebLaf
             WebLookAndFeel.install();
 
+            // Creating instance of client and starts it
             instance = new CommuClient();
             instance.setTitle(TITLE + " | Connected as " + instance.client.getUsername());
             instance.setVisible(true);
